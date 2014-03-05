@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html class="" lang="en-UK">
+	<!--<![endif]-->
+	{% include 'header.html' %}
+	<body>
+
+		<div id="wrapper-outer">
+			<div id="wrapper">
+				<div id="wrapper-inner">
+					{% include 'logo.html' %}
+					{% include 'menu.html' %}
+
+					<div id="content" class="clearfix">
+						<div class="top-wrapper">
+							<div class="top">
+								<div class="top-inner">
+									<div id="map-canvas">
+										&nbsp;
+									</div>
+									
+								</div><!-- /.top-inner -->
+							</div><!-- /.top -->
+						</div><!-- /.top-wrapper -->
+						{% block contentIndex %}
+        				{% endblock %}
+						
+
+					</div><!-- /#content -->
+
+				</div><!-- /#wrapper-inner -->
+
+				{% block wrapper %}
+        		{% endblock %}
+				
+
+				{% include 'footer.html' %}
+			</div><!-- /#wrapper-outer -->
+		</div><!-- /#wrapper -->
+
+	</body>
+</html>

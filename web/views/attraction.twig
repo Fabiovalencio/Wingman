@@ -1,0 +1,41 @@
+{% extends 'body.twig' %}
+{% block contentIndex %}
+    
+    <div class="container">
+        <div class="row">
+            <div id="main" class="span9">
+            	<h1 class="page-header">Atrractions</h1>
+
+	<script>
+		
+		for(var i=0; i<6; i++){
+						document.write('<div class="agencies">');
+							document.write('<div class="agency">');
+								document.write('<div class="row">');
+									document.write('<div class="image span2">');
+										document.write('<a href="#"> <img src="'+attractions[i]['photo']+'" alt="'+attractions[i]['name']+'"> </a>');
+									document.write('</div>');								
+									document.write('<div class="body span4">');
+										document.write('<h3><a href="#">'+attractions[i]['name']+'</a></h3>');
+										document.write('<p>'+attractions[i]['about']+'</p>');
+									document.write('</div>');
+									document.write('<div class="info span3">');
+										document.write('<div class="box">');
+											document.write('<div class="address">');
+												document.write('<p>'+attractions[i]['address']+'</p>');
+											document.write('</div>');
+											document.write('<div class="phone">');
+												document.write('<p>'+attractions[i]['phone']+'</p>');
+											document.write('</div>');
+									document.write('</div>');
+								document.write('</div>');
+							document.write('</div>');
+						document.write('</div>');
+					}
+		
+	</script>
+   <!-- <div class="pagination pagination-centered"><ul class="unstyled"><li class="active"><a href="#">1</a></li><li><a href="http://wp.realia.byaviators.com/agencies/page/2/" class="inactive">2</a></li></ul></div>-->
+            </div><!-- /#main -->
+		</div>
+    </div>
+{% endblock %}

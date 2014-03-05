@@ -1,0 +1,16 @@
+{
+    "require": {
+        "silex/silex"                   : "1.0.*@dev",
+        "twig/twig"                     : ">=1.8,<2.0-dev",
+        "symfony/twig-bridge"           : "~2.3",
+        "doctrine/dbal"                 : ">=2.2.0,<2.4.0-dev",
+        "guzzle/guzzle"					: "~3.7",
+        "jcroll/foursquare-api-client"	: "1.0.*",
+        "doctrine/orm"                  : "*",
+        "symfony/form"                  : "~2.3",
+        "gedmo/doctrine-extensions"     : "*",
+        "symfony/security"              : "2.1.*",
+        "symfony/serializer"            : "2.1.*",
+        "symfony/validator"             : "~2.3"
+    }
+}

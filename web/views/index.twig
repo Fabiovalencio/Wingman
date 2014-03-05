@@ -1,0 +1,197 @@
+{% extends 'body.twig' %}
+{% block contentIndex %}
+
+<div class="container">
+	<div class="row">
+		<script>
+			var map;
+				navigator.geolocation.getCurrentPosition (function (pos) {
+					lat = pos.coords.latitude;
+					lng = pos.coords.longitude;
+					
+					if(lat){
+					  	var lls = document.URL.split("/");
+					  	
+					  	if(lls[lls.length - 2] != "ll"){
+					  		window.location = window.location.origin+'/ll/'+lat+","+lng;
+					  		
+					  	} else {
+					  		var mapOptions = {
+				          		center: new google.maps.LatLng(lat, lng),
+				          		mapTypeId  : google.maps.MapTypeId.ROADMAP,
+				          		scrollwheel: false,
+				          		zoom: 15
+				        	};
+				    		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+					  	}
+					 }
+				});
+		</script>
+		<div id="main" class="span9">
+			<h1 class="page-header">Pubs</h1>
+			<div class="properties-grid">
+			{% set j = 1 %}
+			{% if pubs is defined %}
+				{% if pubs|length > 1 %}
+				    <script>
+				    $( document ).ready(function() {
+					    navigator.geolocation.getCurrentPosition (function (pos) {
+						  lat = pos.coords.latitude;
+						  lng = pos.coords.longitude;
+						  
+						  if(lat){
+						  	var pubs = {{ pubs|json_encode|raw }};
+					        changePubs(pubs);
+						  } 
+						 });			  
+					});
+			
+					</script>
+				{% endif %}
+				
+			{% endif %}
+			{% for pub in pubs|slice(0,9) %}
+			
+			    {% if j == 1 %}
+			    	<div class="row">
+				{% endif %}
+					<div class="span3">
+						<div class="property">
+							<div class="image">
+								<div class="content">
+									<a href="../venue/{{  pub.id|e }}">&nbsp;</a>
+										<img class="imgPub" id="{{  pub.id|e }}" dir="{{  pub.location.lat|e }}, {{  pub.location.lng|e }}"  src="{{ app.request.basepath }}/views/assets/images/wingman.png" alt="{{  pub.name|e }}">
+								</div>
+							</div>
+							<div class="title"> <h2><a href="#"> {{  pub.name|e }} </a></h2> </div>
+							<div class="location">
+								{% if pub.location.address is defined %}
+								    {{  pub.location.address|e }}
+								{% endif %}
+								{% if pub.location.distance is defined %} <span>- Distance: {{pub.location.distance}}m</span> {% endif %}
+							</div>
+							<div class="area">
+								<span class="key">{% if pub.location.city is defined %}
+									{{  pub.location.city|e }},
+								{% endif %}</span><!-- /.key -->
+								<span class="value">{{  pub.location.country|e }}</span><!-- /.value -->
+							</div>
+							<div class="bathrooms" title="Checkins">
+								<div class="content">
+									{{  pub.stats.checkinsCount|e }} <span>Checkins</span>
+								</div>
+							</div>	
+						</div>
+					</div>
+				{% if j % 3 == 0 %}
+					</div>
+					{% set j = 1 %}
+				{% else%}
+					{% set j = j + 1 %}
+				{% endif %}
+			{% endfor %}
+
+			</div><!-- /.properties-grid -->
+		</div><!-- /#main -->
+
+		<div class="sidebar span3">
+
+			<div id="agents_widget-2" class="widget our-agents">
+
+				<h2>Points of interest</h2>
+
+				<div class="content" id="attractions">
+
+				{% for poi in poi|slice(0,8) %}
+					<div class="agent clearfix">
+						<div class="image">
+							<a href="#"> <img src="{{  poi.categories.0.icon.prefix|e }}bg_64.png" dir="{{  poi.location.lat|e }}, {{  poi.location.lng|e }}" class="attachment-post-thumbnail wp-post-image" alt="{{  poi.name|e }}" height="140" width="140"> </a>
+						</div>		
+						<div class="name">
+							{{  poi.name|e }}
+						</div>
+						
+						<div class="email">
+							{% if poi.location.address is defined %} {{  poi.location.address|e }} - {{  poi.location.city|e }} {% endif %}
+							{% if poi.location.distance is defined %} <span> - {{poi.location.distance}}m</span> {% endif %}
+							
+						</div>
+						<div class="phone">
+							{% if poi.contact.phone is defined %}
+								{{  poi.contact.phone|e }}
+								
+							{% endif %}
+							
+						</div>
+					</div>
+				{% endfor %}
+				</div><!-- /.content -->
+
+			</div>
+			<div id="featuredproperties_widget-4" class="widget properties">
+
+			</div>
+
+		</div><!-- /#sidebar -->
+	</div><!-- /.row -->
+<div class="instagram"></div>
+</div><!-- /.container -->
+{% endblock %}
+{% block wrapper %}
+<div class="bottom-wrapper">
+					<div class="bottom container">
+						<div class="bottom-inner row">
+							<div class="span4">
+								<div id="calltoaction_widget-4" class="widget call-to-action">
+
+									<a class="address decoration" href="http://wp.realia.byaviators.com/properties/"></a>
+
+									<h2>Drink</h2>
+
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+										accumsan dui ac nunc imperdiet rhoncus. Aenean vitae imperdiet lectus
+									</p>
+
+									<a href="http://wp.realia.byaviators.com/properties/" class="btn btn-primary">Read more</a>
+
+								</div>
+							</div>
+
+							<div class="span4">
+								<div id="calltoaction_widget-6" class="widget call-to-action">
+
+									<a class="gps decoration" href="http://wp.realia.byaviators.com/properties/"></a>
+
+									<h2>Food</h2>
+
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+										accumsan dui ac nunc imperdiet rhoncus. Aenean vitae imperdiet lectus
+									</p>
+
+									<a href="http://wp.realia.byaviators.com/properties/" class="btn btn-primary">Read more</a>
+
+								</div>
+							</div>
+
+							<div class="span4">
+								<div id="calltoaction_widget-5" class="widget call-to-action">
+
+									<a class="key decoration" href="http://wp.realia.byaviators.com/properties/"></a>
+
+									<h2>Dance</h2>
+
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+										accumsan dui ac nunc imperdiet rhoncus. Aenean vitae imperdiet lectus
+									</p>
+
+									<a href="http://wp.realia.byaviators.com/properties/" class="btn btn-primary">Read more</a>
+
+								</div>
+							</div>
+						</div><!-- /.bottom-inner -->
+					</div><!-- /.bottom -->
+				</div><!-- /.bottom-wrapper -->
+{% endblock %}

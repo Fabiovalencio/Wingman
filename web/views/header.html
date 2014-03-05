@@ -1,0 +1,198 @@
+<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>{{ 'Wingman' }}</title>
+		<link href="../web/views/assets/css/css_003.css" rel="stylesheet" type="text/css">
+		<style type="text/css">
+			.gm-style .gm-style-cc span, .gm-style .gm-style-cc a, .gm-style .gm-style-mtc div {
+				font-size: 10px
+			}
+			@media print {
+				.gm-style .gmnoprint, .gmnoprint {
+					display: none
+				}
+			}
+			@media screen {
+				.gm-style .gmnoscreen, .gmnoscreen {
+					display: none
+				}
+			}
+			.gm-style div, .gm-style span, .gm-style label, .gm-style a {
+				font-family: Roboto, Arial, sans-serif;
+				font-size: 11px;
+				font-weight: 400
+			}
+			.gm-style div, .gm-style span, .gm-style label {
+				text-decoration: none
+			}
+			.gm-style img {
+				border: 0;
+				padding: 0;
+				margin: 0
+			}
+			#map-canvas {
+				width: 100%;
+				height: 400px;
+			}
+		</style>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!--[if lt IE 9]>
+		<script src="http://wp.realia.byaviators.com/wp-content/themes/realia/assets/js/html5.js" type="text/javascript"></script>
+		<![endif]-->
+
+		<link rel="stylesheet" id="dsidxpress-unconditional-css" href="../web/views/assets/css/client_002.css" type="text/css" media="all">
+		<link rel="stylesheet" id="dsidxwidgets-unconditional-css" href="../web/views/assets/css/client.css" type="text/css" media="all">
+		<link rel="stylesheet" id="contact-form-7-css" href="../web/views/assets/css/styles.css" type="text/css" media="all">
+		<link rel="stylesheet" id="bhittani_plugin_kksr-css" href="../web/views/assets/css/css.css" type="text/css" media="all">
+		<link rel="stylesheet" id="rs-settings-css" href="../web/views/assets/css/settings.css" type="text/css" media="all">
+		<link rel="stylesheet" id="rs-captions-css" href="../web/views/assets/css/captions.css" type="text/css" media="all">
+		<link rel="stylesheet" id="font-css" href="../web/views/assets/css/css_002.css" type="text/css" media="all">
+		<link rel="stylesheet" id="bootstrap-css" href="../web/views/assets/css/bootstrap.css" type="text/css" media="all">
+		<link rel="stylesheet" id="bootstrap-responsive-css" href="../web/views/assets/css/bootstrap-responsive.css" type="text/css" media="all">
+		<link rel="stylesheet" id="chosen-css" href="../web/views/assets/css/chosen.css" type="text/css" media="all">
+		<link rel="stylesheet" id="fancybox-css" href="../web/views/assets/css/jquery.css" type="text/css" media="all">
+		<link rel="stylesheet" id="general_variant-css" href="../web/views/assets/css/realia-blue.css" type="text/css" media="all">
+		<link rel="stylesheet" id="style-css" href="../web/views/assets/css/style.css" type="text/css" media="all">
+		<link rel="stylesheet" href="../web/views/assets/css/language-selector.css" type="text/css" media="all">
+		<script type="text/javascript" src="../web/views/assets/js/jquery.js"></script>
+		<script type="text/javascript" src="../web/views/assets/js/instagram.min.js"></script>
+		<script type="text/javascript" src="../web/views/assets/js/helper.js"></script>
+		<script type="text/javascript" src="../web/views/assets/js/london.js"></script>
+		<script type="text/javascript" src="http://www.codehelper.io/api/ips/?js"></script>
+		<script type="text/javascript" src="../web/views/assets/js/jquery.carouFredSel-6.2.1.js"></script>
+
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true&key=AIzaSyABg3_lAn7VYyoxp8SaM98ZarA7S-2LQkQ"></script>
+		<script>
+			// var head= document.getElementsByTagName('head')[0];
+		   	// var script= document.createElement('script');
+		   	// script.type= 'text/javascript';
+		   	// script.src= "https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyAj-hXDSXAW7ZiuiRVaZfNiFtkg9a-AuSY&userIP="+codehelper_ip.IP;
+		   	// head.appendChild(script);
+				
+				
+				function changePubs(pubs){
+					setMarkers(map, pubs);
+				}
+				
+				$( document ).ready(function() {
+				//console.log("https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBrmap3xsKdsT9sUxfDhVu85IWKsXB6aKw&userIP="+codehelper_ip.IP); 
+				var token = "1855841.14b66f9.bf53263717174f1eb53171939a7562a6";
+				var chance = 0;
+				function grabId(lat, lng, id, name) {
+					$.ajax({
+					  type:'POST', 
+					  url:'https://api.instagram.com/v1/locations/search?callback=?', 
+					  data: {
+					    access_token: token, 
+					    lat: lat,
+					    lng: lng
+					  },
+					  dataType:'json',
+					  success: function(res) {
+					  	for(var a=0; a < res['data'].length; a++){
+					  		if(res['data'][a]['name'] == name){
+					  			grabImg(id, res['data'][0]['id']);
+					  		}
+					  	}  		    
+					  },
+					  error: function(){
+					  	if (chance < 3) {
+					  		grabId(lat, lng, id);
+					  		chance ++;
+					  	};
+					  	
+					  }
+				  });
+				 
+				};
+				
+				function grabImg(idImg, idInsta){
+					//console.log('https://api.instagram.com/v1/locations/'+idInsta+'/media/recent?access_token='+token);
+					$.ajax({
+					  type:'POST', 
+					  url:'https://api.instagram.com/v1/locations/'+idInsta+'/media/recent?callback=?', 
+					  data: {
+					    access_token: token
+					  },
+					  dataType:'json',
+					  success: function(result) {
+					  	if(result['pagination']['next_max_id']){
+					  		cURL(result['data'], idImg, idInsta, result['pagination']['next_max_id']);
+					  	} else {
+					  		chooseIma(result['data'], idImg);
+					  	}
+					  }	
+				    });
+				}
+				
+				function cURL(array, idImg, idInsta, maxId){
+					pagination = null;
+					//result = array;
+					$.ajax({
+				        type: "POST",
+				        url: 'https://api.instagram.com/v1/locations/'+idInsta+'/media/recent?callback=?',
+				        data: {
+					    	access_token: token,
+					    	max_id: maxId
+					  	},
+				        dataType:'json',
+				        success: function(result){
+				        	//console.log(result);
+				        	res = $.extend({}, result['data'], array);
+				           if(result['pagination']['next_max_id']){
+				            cURL(res, idImg, idInsta, result['pagination']['next_max_id']);
+				           } else {
+				           	chooseIma(result['data'], idImg);
+				           }
+				        },
+				        error: function(){
+						    chooseIma(array, idImg);	
+						  }  
+				    });
+    
+				}
+				
+				function chooseIma(array, idImg){
+					var mid = [];
+					var res = array;
+					for(var i=0; i<res.length; i++){
+						//console.log(res[i]);
+						var obj = {
+					        id: res[i]['location']['id'],
+					        likes: res[i]['likes']['count'],
+					        image: res[i]['images']['low_resolution']['url'],
+					        lat: res[i]['location']['lat'],
+					    };
+					    mid.push(obj);
+					    mid.sort(function(a,b) {
+						    return a.likes - b.likes;
+						});
+					}
+					var arr = mid.slice(-1).pop();
+				    $('#'+idImg).attr('src',arr['image']);
+				}
+				
+				$('.instagram').instagram({
+				    hash: 'pub',
+				    clientId: '14b66f93a35d450ca4d5b4d39e14a9c2'
+				  });
+				  
+				  $('.instagram').instagram({
+					  search: {
+					    lat: 48.858844,
+					    lng: 2.294351,
+					    distance: 2000
+					  },
+					  clientId: '14b66f93a35d450ca4d5b4d39e14a9c2'
+					});
+  
+				$( ".imgPub" ).each(function() {
+					var ll = $(this).attr('dir').split(",");
+				  	grabId(ll[0], ll[1], $(this).attr('id'), $(this).attr('alt'));
+				}); 
+
+			});
+		</script>
+	</head>

@@ -1,0 +1,33 @@
+{% extends 'layout.twig' %}
+{% set active = 'homepage' %}
+
+{% block content %}
+
+    <div class="hero-unit">
+        <p> </p>
+        <p> </p>
+        <h1>Hello, {{ dump(user) }}</h1>
+        <p> </p>
+        <p> </p>
+        <p>Thank you for allowing us to access your foursquare usage data and contributing to science ! We really appreciate it.</p>
+        <p> </p>
+        <p> </p>
+        <p>Hmm. I noticed something interesting. You have <b>{{ user['checkins']['count'] }}</b> checkins, <b>{{ user['friends']['count'] }}</b> friends, <b>{{ user['badges']['count'] }}</b> badges and <b>{{ user['mayorships']['count'] }}</b> mayorships. Sweet !
+        <p><b>Please</b> don't unauthorize this app from foursquare in the next 7 days. I will be writing code furiously to get some of your other data. Thanks !</p>
+        <p><i>You can close this window whenever you are done.</i></p>
+      </div>
+
+      <hr>
+	     {% for pub in pubs['response']['venues'] %}
+	        <li>{{ pub.name|e }}</li>
+	    {% endfor %}
+
+	  <div id="map_canvas">&nbsp;</div>
+	  
+		</br>
+      <footer>
+        <p class ="left"><b>If you have any questions regarding this study please email Shion Guha at sg648@cornell.edu</b></p>
+        <p class="left">This application uses the foursquare<sup>TM</sup> application programming interface but is not endorsed or certified by Foursquare Labs, Inc</p>
+                <p class="left"><img src="http://colinwren.com/projects/route/poweredbyfoursquare-mark.png" />
+      </footer>
+{% endblock %}

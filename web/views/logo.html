@@ -1,0 +1,40 @@
+<div class="header-top-wrapper">
+	<div class="header-top">
+
+		<!-- HEADER -->
+		<div id="header-wrapper">
+			<div id="header">
+				<div id="header-inner">
+					<div class="container">
+						<div class="navbar">
+							<div class="navbar-inner">
+								<div class="row">
+									<div class="logo-wrapper span4">
+
+										<div class="logo">
+											<a href="#" title="Home"> <img src="" alt="Home"> </a>
+										</div><!-- /.logo -->
+
+										<div class="site-name">
+											<a href="#" title="Home" class="brand"> Wingman </a>
+										</div><!-- /.site-name -->
+
+										<div class="site-slogan">
+											<span></span>
+										</div><!-- /.site-slogan -->
+
+									</div><!-- /.logo-wrapper -->
+									{% if user is null %}
+										<a class="btn btn-primary btn-large list-your-property arrow-right" href="https://foursquare.com/oauth2/authenticate?client_id={{ oauth['id'] }}&response_type=code&redirect_uri={{ oauth['redirect'] }}"> Register and find new pubs </a>						
+									{% else %}
+										
+									{% endif %}
+								</div><!-- /.row -->
+							</div><!-- /.navbar-inner -->
+						</div><!-- /.navbar -->
+					</div><!-- /.container -->
+				</div><!-- /#header-inner -->
+			</div><!-- /#header -->
+		</div><!-- /#header-wrapper -->
+	</div><!-- /.top -->
+</div><!-- /.top-wrapper -->

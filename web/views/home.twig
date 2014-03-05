@@ -1,0 +1,300 @@
+
+{% extends 'layout2.twig' %}
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <script>
+                var map;
+                var lat;
+                var lng;
+                var locationsArray2 = new Array();
+                var locationsArray = new Array();
+                var typesArray = new Array();
+                var contentsArray = new Array();
+                var user = null;
+                navigator.geolocation.getCurrentPosition (function (pos) {
+                    lat = pos.coords.latitude;
+                    lng = pos.coords.longitude;
+
+                    if(lat){
+                        var lls = document.URL.split("/");
+
+                        if(lls[lls.length - 2] != "home"){
+                            window.location = window.location.origin+'/home/'+lat+","+lng;
+
+                        }
+                    }
+                });
+            </script>
+            <div id="main" class="span9">
+                <h1 class="page-header">Pubs</h1>
+                <div class="properties-grid">
+                    {% set j = 1 %}
+
+                    {% for pub in pubs|slice(0,9) %}
+
+                        {% if j == 1 %}
+                            <div class="row">
+                        {% endif %}
+                        <div class="span3">
+                            <div class="property">
+                                <div class="image">
+                                    <div class="content">
+                                        <a href="../venue/{{  pub.id|e }}">&nbsp;</a>
+                                        <img class="imgPub" id="{{  pub.id|e }}" dir="{{  pub.location.lat|e }},{{  pub.location.lng|e }}"  src="{{ app.request.basepath }}/web/views/assets/images/wingman.png" alt="{{  pub.name|e }}">
+                                    </div>
+                                </div>
+                                <div class="title"> <h2><a href="#"> {{  pub.name|e }} </a></h2> </div>
+                                <div class="location">
+                                    {% if pub.location.address is defined %}
+                                        {{  pub.location.address|e }}
+                                    {% endif %}
+                                    {% if pub.location.distance is defined %} <span>- Distance: {{pub.location.distance}}m</span> {% endif %}
+                                </div>
+                                <div class="area">
+								<span class="key">{% if pub.location.city is defined %}
+									{{  pub.location.city|e }},
+								{% endif %}</span><!-- /.key -->
+                                    <span class="value">{{  pub.location.country|e }}</span><!-- /.value -->
+                                </div>
+                                <div class="bathrooms" title="Checkins">
+                                    <div class="content">
+                                        {{  pub.stats.checkinsCount|e }} <span>Checkins</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if j % 3 == 0 %}
+                            </div>
+                            {% set j = 1 %}
+                        {% else%}
+                            {% set j = j + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if pubs is defined %}
+                        {% if pubs|length > 1 %}
+                            <script>
+                                var jQuery = $.noConflict();
+                                jQuery(document).ready(function() {
+
+                                    {% if lat is defined %}
+                                        var pubs = {{ pubs|json_encode|raw }};
+                                        for(var y=0; y<pubs.length; y++){
+                                            locationsArray[y]=new Array();
+                                            for (j=0;j<2;j++) {
+                                                if(j == 0)
+                                                    locationsArray[y][j]=pubs[y]['location']['lat'];
+                                                else
+                                                    locationsArray[y][j]=pubs[y]['location']['lng'];
+                                            }
+
+                                            //locationsArray.push(pubs[y]['location']['lat']+","+pubs[y]['location']['lng']);
+                                            typesArray.push(pubs[y]['categories'][0]['name']);
+                                            contentsArray.push('<div class="infobox"><div class="close"><img src="../web/views/assets/img/close.png" alt=""></div><div class="image"><a href="../venue/'+pubs[y]['id']+'"><img width="80" height="59" src="'+pubs[y]['categories'][0]['icon']['prefix']+'bg_64'+pubs[y]['categories'][0]['icon']['suffix']+'" class="attachment-admin-thumb wp-post-image" alt="property-small-6" /></a></div><div class="title"><a href="../venue/'+pubs[y]['id']+'">'+pubs[y]['name']+'</a></div><div class="area"><span class="key">Distance:</span><span class="value">'+pubs[y]['location']['distance']+'</sup></span></div><div class="price">Here now: '+pubs[y]['hereNow']['count']+'</div><div class="link"><a href="../venue/'+pubs[y]['id']+'">View more</a></div></div>');
+                                        }
+
+
+                                        var map = jQuery('#map').aviators_map({
+                                            locations              : locationsArray,
+                                            types                  : typesArray,
+                                            contents               : contentsArray,
+                                            transparentMarkerImage : 'http://wp.realia.byaviators.com/wp-content/themes/realia/assets/img/marker-transparent.png',
+                                            transparentClusterImage: 'http://wp.realia.byaviators.com/wp-content/themes/realia/assets/img/markers/cluster-transparent.png',
+                                            zoom                   : 14,
+                                            center                 : {
+                                                latitude : {{ lat }},
+                                                longitude: {{ lng }}
+                                            },
+                                            filterForm             : '',
+                                            enableGeolocation      : ''
+                                        });
+
+                                    {% endif %}
+
+                                    var token = "1855841.14b66f9.bf53263717174f1eb53171939a7562a6";
+                                    var chance = 0;
+                                    function grabId(lat, lng, id, name) {
+                                        console.log('https://api.instagram.com/v1/locations/search?access_token='+token+'&lat='+lat+'&lng='+lng);
+                                        jQuery.ajax({
+                                            type:'POST',
+                                            url:'https://api.instagram.com/v1/locations/search?callback=?',
+                                            data: {
+                                                access_token: token,
+                                                lat: lat,
+                                                lng: lng
+                                            },
+                                            dataType:'json',
+                                            success: function(res) {
+                                                for(var a=0; a < res['data'].length; a++){
+                                                    if(res['data'][a]['name'] == name){
+                                                        grabImg(id, res['data'][0]['id']);
+                                                    }
+                                                }
+                                            },
+                                            error: function(){
+                                                if (chance < 3) {
+                                                    grabId(lat, lng, id);
+                                                    chance ++;
+                                                };
+
+                                            }
+                                        });
+
+                                    };
+
+                                    function grabImg(idImg, idInsta){
+                                        //console.log('https://api.instagram.com/v1/locations/'+idInsta+'/media/recent?access_token='+token);
+                                        jQuery.ajax({
+                                            type:'POST',
+                                            url:'https://api.instagram.com/v1/locations/'+idInsta+'/media/recent?callback=?',
+                                            data: {
+                                                access_token: token
+                                            },
+                                            dataType:'json',
+                                            success: function(result) {
+                                                if(result['pagination']['next_max_id']){
+                                                    cURL(result['data'], idImg, idInsta, result['pagination']['next_max_id']);
+                                                } else {
+                                                    chooseIma(result['data'], idImg);
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    function cURL(array, idImg, idInsta, maxId){
+                                        pagination = null;
+                                        //result = array;
+                                        jQuery.ajax({
+                                            type: "POST",
+                                            url: 'https://api.instagram.com/v1/locations/'+idInsta+'/media/recent?callback=?',
+                                            data: {
+                                                access_token: token,
+                                                max_id: maxId
+                                            },
+                                            dataType:'json',
+                                            success: function(result){
+                                                //console.log(result);
+                                                res = jQuery.extend({}, result['data'], array);
+                                                if(result['pagination']['next_max_id']){
+                                                    cURL(res, idImg, idInsta, result['pagination']['next_max_id']);
+                                                } else {
+                                                    chooseIma(result['data'], idImg);
+                                                }
+                                            },
+                                            error: function(){
+                                                chooseIma(array, idImg);
+                                            }
+                                        });
+
+                                    }
+
+                                    function chooseIma(array, idImg){
+                                        var mid = [];
+                                        var res = array;
+                                        for(var i=0; i<res.length; i++){
+                                            //console.log(res[i]);
+                                            var obj = {
+                                                id: res[i]['location']['id'],
+                                                likes: res[i]['likes']['count'],
+                                                image: res[i]['images']['low_resolution']['url'],
+                                                lat: res[i]['location']['lat'],
+                                            };
+                                            mid.push(obj);
+                                            mid.sort(function(a,b) {
+                                                return a.likes - b.likes;
+                                            });
+                                        }
+                                        var arr = mid.slice(-1).pop();
+                                        jQuery('#'+idImg).attr('src',arr['image']);
+                                    }
+
+
+                                    //setTimeout(function(){
+
+
+                                        jQuery( ".imgPub" ).each(function() {
+                                            var ll = jQuery(this).attr('dir').split(",");
+                                            grabId(ll[0], ll[1], jQuery(this).attr('id'), jQuery(this).attr('alt'));
+                                        });
+
+                                    // },1000);
+
+
+                                    {% if user is defined %}
+                                        user = {{ user|json_encode|raw }}
+                                    {% endif %}
+                                    jQuery("a").on('click',function(e){
+                                        console.log(e.target.href.indexOf("foursquare"));
+                                        if(user == null){
+                                            if(e.target.href != e.target.host){
+                                                if(e.target.href.indexOf("foursquare") == -1){
+                                                    alert('You must be logged in to access this page.');
+                                                    return false;
+                                                }
+                                            }
+                                        }
+
+                                    });
+
+                                    jQuery("#pac-input").on('focus',function(){
+                                        if(user == null){
+                                            alert('You must be logged in to access this page.');
+                                            jQuery('#pac-input').blur();
+                                        }
+                                    });
+
+
+                                });
+
+                            </script>
+                        {% endif %}
+                    {% endif %}
+                </div><!-- /.properties-grid -->
+            </div><!-- /#main -->
+
+            <div class="sidebar span3">
+
+                
+
+                <div id="agents_widget-2" class="widget our-agents">
+
+                    <h2>Points of interest</h2>
+
+                    <div class="content" id="attractions">
+
+                        {% for poi in poi|slice(0,8) %}
+                            <div class="agent clearfix">
+                                <div class="image">
+                                    <a href="#"> <img src="{{  poi.categories.0.icon.prefix|e }}bg_64.png" dir="{{  poi.location.lat|e }}, {{  poi.location.lng|e }}" class="attachment-post-thumbnail wp-post-image" alt="{{  poi.name|e }}" height="140" width="140"> </a>
+                                </div>
+                                <div class="name">
+                                    {{  poi.name|e }}
+                                </div>
+
+                                <div class="email">
+                                    {% if poi.location.address is defined %} {{  poi.location.address|e }} - {{  poi.location.city|e }} {% endif %}
+                                    {% if poi.location.distance is defined %} <span> - {{poi.location.distance}}m</span> {% endif %}
+
+                                </div>
+                                <div class="phone">
+                                    {% if poi.contact.phone is defined %}
+                                        {{  poi.contact.phone|e }}
+
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div><!-- /.content -->
+
+                </div>
+                <div id="featuredproperties_widget-4" class="widget properties">
+
+                </div>
+
+            </div><!-- /#sidebar -->
+        </div><!-- /.row -->
+        <div class="instagram"></div>
+    </div><!-- /.container -->
+{% endblock %}

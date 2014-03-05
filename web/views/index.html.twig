@@ -1,0 +1,24 @@
+{% extends 'layout.twig' %}
+{% set active = 'homepage' %}
+
+{% block content %}
+
+    <div class="hero-unit">
+        <h1>glome</h1>
+        <p> </p>
+        <p> </p>
+        <p>This is an app which will collect all your 4sq usage data. Please click on the button below to allow us access to your data.</p>
+        <p> </p>
+        <p> </p>
+        <p><a href="https://foursquare.com/oauth2/authenticate?client_id={{ oauth['id'] }}&response_type=code&redirect_uri={{ oauth['redirect'] }}" class="btn btn-primary btn-large"> log in with foursquare &raquo;</a></p>
+        <p><b>Note:</b> If you signed up for foursquare using your Facebook credentials then you may not be able to use this app. Unfortunately, this is a constraint imposed by foursquare and oauth2. :(</p>
+        <p>Please try it at least once though.</p>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p class="left">This application uses the foursquare<sup>TM</sup> application programming interface but is not endorsed or certified by Foursquare Labs, Inc</p>
+		<p class="left"><img src="http://colinwren.com/projects/route/poweredbyfoursquare-mark.png" />
+      </footer>
+{% endblock %}

@@ -1,0 +1,49 @@
+_xdc_._macj95 && _xdc_._macj95( {
+   "html_attributions" : [],
+   "results" : [
+      {
+         "formatted_address" : "Holborn, London WC1V, UK",
+         "geometry" : {
+            "location" : {
+               "lat" : 51.51758,
+               "lng" : -0.12045
+            }
+         },
+         "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+         "id" : "1ce4f0ede0c42b990ffa95667a0716c1cd83e08a",
+         "name" : "Holborn",
+         "reference" : "CoQBcwAAAJU6MuB4-okol9yEgnRQVkIEMVQHcvT69eHumGeBE55gYnpfk0j766Y-tut30jqnvk0kkSDuI60OH38kcTZMvu2HOFBWnZt5ogsE7Y7S0E4-7Y2-GNfq5B0w_FAB82dnspdyFUKfka54NEdOu145wmVcfKbLiOmesD2QYaD2dXy5EhBVxbxXf6reD2C21B5iO3CiGhSLAXCDFB252p_E2laP5WNpbDs2Yw",
+         "types" : [ "subway_station", "transit_station", "train_station", "establishment" ]
+      },
+      {
+         "formatted_address" : "Holborn, London WC1V, UK",
+         "geometry" : {
+            "location" : {
+               "lat" : 51.5172934,
+               "lng" : -0.1184131
+            }
+         },
+         "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+         "id" : "9a03d249843f0c01ae47bb9fdf35180b7e5f48af",
+         "name" : "Holborn",
+         "reference" : "CpQBhAAAAGZZa_rMmhGLa6YjPyGN56UXVRXBKyspH5zpiIoc1BnMQt1x0fiFkZx1a8OCpKmKYxuDLT1hpyNCb6W3uZtIczALUejakVudacLPftqgJB_agHiDhcIeJgmTkJ5x_lSrTTYMUkfVOddHn5Jsp-eOIQxqmzUCsouwwxUiUfP6HJSrTaCFFcIHWTE--_O8nL6iDBIQPY_FVUDWlQ71DcnKXnkV7xoUzbIoEVg54jJZkCzMxzqjOGV49M8",
+         "types" : [ "neighborhood", "political" ]
+      },
+      {
+         "formatted_address" : "Holborn, 50 Blundell St, London N7 9BH, UK",
+         "geometry" : {
+            "location" : {
+               "lat" : 51.54434819999999,
+               "lng" : -0.1215683
+            }
+         },
+         "icon" : "http://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
+         "id" : "c23e4756c2b9f78df0933158c495728808ba4e53",
+         "name" : "Holborn",
+         "reference" : "CoQBcwAAAJKRQzcq_wIssNnbGPE5QZL4GpW4X7C-dO7jbLVAFSz9kTUk_dFR6eMfixzmwy-m_rB5ZVEjq8aSvKz4fYUioXjEwV-fxl1pLKOoahn4PPSnQWbpdmC893_saPcIDztgnGZPn9o9qTe0D4R-YwFwdIv5K3M6jX5bd_MCoeI2fRjLEhA9PKbq77prgjzWdxjcs6hmGhQrOgl5ssY9YJWEAMuIaLS-PEzYsQ",
+         "types" : [ "point_of_interest", "establishment" ]
+      }
+   ],
+   "status" : "OK"
+}
+ )
